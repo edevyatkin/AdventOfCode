@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <StartupObject>AdventOfCode2021.Day7</StartupObject>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <None Update="session_key">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\AdventOfCodeClient\AdventOfCodeClient.csproj" />
+    </ItemGroup>
+
+</Project>
