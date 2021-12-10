@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <StartupObject>AdventOfCode2021.Day9</StartupObject>
+        <StartupObject>AdventOfCode2021.Day10</StartupObject>
     </PropertyGroup>
     
     <ItemGroup>
