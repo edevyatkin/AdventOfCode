@@ -8,7 +8,7 @@ namespace AdventOfCode2021 {
 
         public static async Task<string[]> FetchInputAsync(int year, int day) {
             var sessionKey = await File.ReadAllTextAsync(SessionKeyFile);
-            var aocClient = new AocClient(sessionKey);
+            var aocClient = new AocClient(sessionKey.Trim());
             return await aocClient.FetchInputAsync(year, day);
         }
     }
