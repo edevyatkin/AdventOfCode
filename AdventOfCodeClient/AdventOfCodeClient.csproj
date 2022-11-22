@@ -2,8 +2,14 @@
 
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Update="session_key">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 
 </Project>
