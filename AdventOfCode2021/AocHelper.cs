@@ -1,15 +1,11 @@
-using System.IO;
 using System.Threading.Tasks;
-using AdventOfCodeClient;
 
-namespace AdventOfCode2021 {
-    public static class AocHelper {
-        private const string SessionKeyFile = "session_key";
+namespace AdventOfCode2021;
 
-        public static async Task<string[]> FetchInputAsync(int year, int day) {
-            var sessionKey = await File.ReadAllTextAsync(SessionKeyFile);
-            var aocClient = new AocClient(sessionKey.Trim());
-            return await aocClient.FetchInputAsync(year, day);
-        }
+public class AocHelper
+{
+    public static async Task<string[]> FetchInputAsync(int year, int day)
+    {
+        return await AdventOfCodeClient.AocHelper.FetchInputAsync(year, day);
     }
 }
