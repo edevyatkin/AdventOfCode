@@ -1,70 +1,71 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
+using AdventOfCodeClient;
 
-namespace AdventOfCode2021 {
-    public class Day15 {
-        public static async Task Main(string[] args) {
-            var input = await AocHelper.FetchInputAsync(2021, 15);
+namespace AdventOfCode2021;
 
-            var data = new List<int[]>();
-            for (var i = 0; i < input.Length; i++) {
-                var line = input[i].ToCharArray().Select(c => c - '0').ToArray();
-                data.Add(line);
-            }
+[AocDay(2021,15)]
+public class Day15 : IAocDay {
+    public async Task<AocDayResult> Solve(int year, int day) {
+        var input = await AocHelper.FetchInputAsync(year, day);
 
-            // PART 1
-            int result1 = Solve(data, repeat: 1);
-            Console.WriteLine(result1);
-
-            // PART 2
-            int result2 = Solve(data, repeat:5);
-            Console.WriteLine(result2);
+        var data = new List<int[]>();
+        for (var i = 0; i < input.Length; i++) {
+            var line = input[i].ToCharArray().Select(c => c - '0').ToArray();
+            data.Add(line);
         }
 
-        private static int Solve(List<int[]> data, int repeat) {
-            int height = data.Count;
-            int width = data[0].Length;
-            var heap = new PriorityQueue<(int,int,int), int>();
-            heap.Enqueue((0,0,0),0);
-            var visited = new HashSet<(int,int)>();
-            var risks = new Dictionary<(int,int), int>();
-            risks[(0,0)] = 0;
+        // PART 1
+        int result1 = Solve(data, repeat: 1);
 
-            int GetValue(int i, int j) {
-                (int ix, int jx) = (i % height, j % width);
-                int extra = i / height + j / width;
-                var num = data[ix][jx] + extra;
-                return num % 10 + num / 10;
-            }
-            
-            var diffs = new List<(int DI, int DJ)> { (-1, 0), (0, 1), (1, 0), (0, -1) };
-            while (heap.Count > 0) {
-                var (prisk, i, j) = heap.Dequeue(); // get pos
-                if (visited.Contains((i,j)))
-                    continue;
-                if (risks.ContainsKey((i,j)) && risks[(i,j)] != prisk)
-                    continue;
-                foreach (var diff in diffs) {
-                    int di = i + diff.DI;
-                    int dj = j + diff.DJ;
-                    if (di < 0 || di == height*repeat || dj < 0 || dj == width*repeat)
-                        continue;
-                    if (visited.Contains((di,dj)))
-                        continue;
-                    int riskFromPos = GetValue(di, dj);
-                    int riskToPos = risks[(i, j)];
-                    int targetRisk = risks.GetValueOrDefault((di, dj), int.MaxValue);
-                    int newTargetRisk = Math.Min(targetRisk, riskToPos + riskFromPos);
-                    risks[(di, dj)] = newTargetRisk;
-                    heap.Enqueue((newTargetRisk, di, dj), newTargetRisk);
-                }
-                visited.Add((i, j));
-            }
+        // PART 2
+        int result2 = Solve(data, repeat:5);
 
-            return risks[(height * repeat - 1, width * repeat - 1)];            
+        return new AocDayResult(result1, result2);
+    }
+
+    private static int Solve(List<int[]> data, int repeat) {
+        int height = data.Count;
+        int width = data[0].Length;
+        var heap = new PriorityQueue<(int,int,int), int>();
+        heap.Enqueue((0,0,0),0);
+        var visited = new HashSet<(int,int)>();
+        var risks = new Dictionary<(int,int), int>();
+        risks[(0,0)] = 0;
+
+        int GetValue(int i, int j) {
+            (int ix, int jx) = (i % height, j % width);
+            int extra = i / height + j / width;
+            var num = data[ix][jx] + extra;
+            return num % 10 + num / 10;
         }
+        
+        var diffs = new List<(int DI, int DJ)> { (-1, 0), (0, 1), (1, 0), (0, -1) };
+        while (heap.Count > 0) {
+            var (prisk, i, j) = heap.Dequeue(); // get pos
+            if (visited.Contains((i,j)))
+                continue;
+            if (risks.ContainsKey((i,j)) && risks[(i,j)] != prisk)
+                continue;
+            foreach (var diff in diffs) {
+                int di = i + diff.DI;
+                int dj = j + diff.DJ;
+                if (di < 0 || di == height*repeat || dj < 0 || dj == width*repeat)
+                    continue;
+                if (visited.Contains((di,dj)))
+                    continue;
+                int riskFromPos = GetValue(di, dj);
+                int riskToPos = risks[(i, j)];
+                int targetRisk = risks.GetValueOrDefault((di, dj), int.MaxValue);
+                int newTargetRisk = Math.Min(targetRisk, riskToPos + riskFromPos);
+                risks[(di, dj)] = newTargetRisk;
+                heap.Enqueue((newTargetRisk, di, dj), newTargetRisk);
+            }
+            visited.Add((i, j));
+        }
+
+        return risks[(height * repeat - 1, width * repeat - 1)];            
     }
 }

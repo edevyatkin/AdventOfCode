@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AdventOfCodeClient;
 
-namespace AdventOfCode2021; 
+namespace AdventOfCode2021;
 
-public class Day18 {
-    public static async Task Main(string[] args) {
-        var input = await AocHelper.FetchInputAsync(2021, 18);
+[AocDay(2021,18)]
+public class Day18 : IAocDay {
+    public async Task<AocDayResult> Solve(int year, int day) {
+        var input = await AocHelper.FetchInputAsync(year, day);
 
         // PART 1
         long result1 = 0;
@@ -19,7 +21,6 @@ public class Day18 {
         }
         
         result1 = TreeCalculator.Magnitude(resultTree);
-        Console.WriteLine(result1);
 
         // PART 2
         int result2 = 0;
@@ -34,7 +35,7 @@ public class Day18 {
             }
         }
         
-        Console.WriteLine(result2);
+        return new AocDayResult(result1, result2);
     }
 
     public class Node {

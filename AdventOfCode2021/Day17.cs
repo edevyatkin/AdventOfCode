@@ -1,12 +1,13 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using AdventOfCodeClient;
 
-namespace AdventOfCode2021; 
+namespace AdventOfCode2021;
 
-public class Day17 {
-    public static async Task Main(string[] args) {
-        var input = await AocHelper.FetchInputAsync(2021, 17);
+[AocDay(2021,17)]
+public class Day17 : IAocDay {
+    public async Task<AocDayResult> Solve(int year, int day) {
+        var input = await AocHelper.FetchInputAsync(year, day);
 
         var sp = input[0].Split(' ')[2..];
         var xCoord = sp[0][2..^1].Split("..").Select(int.Parse).ToArray();
@@ -15,7 +16,6 @@ public class Day17 {
         // PART 1
         int val = -(yCoord[0] + 1);
         int result1 = val * (val + 1) / 2;
-        Console.WriteLine(result1);
 
         // PART 2
         int result2 = 0;
@@ -38,6 +38,7 @@ public class Day17 {
                 }
             }
         }
-        Console.WriteLine(result2);
+
+        return new AocDayResult(result1, result2);
     }
 }

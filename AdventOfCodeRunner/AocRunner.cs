@@ -32,8 +32,9 @@ public class AocRunner
                 var solveMethod = type.GetMethod(nameof(IAocDay.Solve));
                 var result = solveMethod!.Invoke(dayClass, new object[] { o.Year, o.Day }) as Task<AocDayResult>;
                 var res = await result!;
-                Console.WriteLine($"Part 1: {res.Part1}");
-                Console.WriteLine($"Part 2: {res.Part2}");
+                Console.WriteLine($"Part 1:\n{res.Part1}");
+                Console.WriteLine();
+                Console.WriteLine($"Part 2:\n{res.Part2}");
                 break;
             }            
         });
