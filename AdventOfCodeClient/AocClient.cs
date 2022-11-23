@@ -34,7 +34,10 @@ public class AocClient {
         if (responseMessage.IsSuccessStatusCode)
         {
             await File.WriteAllTextAsync(filePath, data);
-            return data.Split(new[] { Environment.NewLine }, StringSplitOptions.None)[..^1];               
+            var splitted = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            if (splitted[^1] == string.Empty)
+                splitted = splitted[..^1];
+            return splitted;
         }
         else
         {
