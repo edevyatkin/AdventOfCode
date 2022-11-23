@@ -24,22 +24,22 @@ public class AocClient {
             
         var dirInfo = Directory.CreateDirectory($"aoc_inputs/{year}");
         var filePath = Path.Combine(dirInfo.FullName, $"Day{day}_input");
-            
-        if (!File.Exists(filePath)) {
-            Client.Value.DefaultRequestHeaders.Add("Cookie",$"session={_session}");
-            var uri = $"https://adventofcode.com/{year}/day/{day}/input";
-            var responseMessage = await Client.Value.GetAsync(uri);
-            var data = await responseMessage.Content.ReadAsStringAsync();
-            try {
-                responseMessage.EnsureSuccessStatusCode();
-                await File.WriteAllTextAsync(filePath, data);
-                return data.Split(new[] { Environment.NewLine }, StringSplitOptions.None)[..^1];
-            }
-            catch (HttpRequestException ex) {
-                throw new Exception(data);
-            }
+
+        if (File.Exists(filePath)) 
+            return await File.ReadAllLinesAsync(filePath);
+        Client.Value.DefaultRequestHeaders.Add("Cookie",$"session={_session}");
+        var uri = $"https://adventofcode.com/{year}/day/{day}/input";
+        var responseMessage = await Client.Value.GetAsync(uri);
+        var data = await responseMessage.Content.ReadAsStringAsync();
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            await File.WriteAllTextAsync(filePath, data);
+            return data.Split(new[] { Environment.NewLine }, StringSplitOptions.None)[..^1];               
         }
-            
-        return await File.ReadAllLinesAsync(filePath);
+        else
+        {
+            Console.WriteLine(data);
+            return Array.Empty<string>();    
+        }
     }
 }
