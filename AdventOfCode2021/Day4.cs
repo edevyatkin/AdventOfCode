@@ -9,10 +9,8 @@ namespace AdventOfCode2021;
 [AocDay(2021,4)]
 public class Day4 : IAocDay
 {
-    public async Task<AocDayResult> Solve(int year, int day)
+    public AocDayResult Solve(string[] input)
     {
-        var input = await AocHelper.FetchInputAsync(year, day);
-
         // PART 1
         var numberSet = input[0].Split(',').Select(int.Parse).ToArray();
         var boards = new List<int[][]>();

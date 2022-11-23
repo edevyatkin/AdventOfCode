@@ -5,10 +5,8 @@ namespace AdventOfCode2015;
 [AocDay(2015,1)]
 public class Day1 : IAocDay
 {
-    public async Task<AocDayResult> Solve(int year, int day)
+    public AocDayResult Solve(string[] input)
     {
-        var input = await AocHelper.FetchInputAsync(year, day);
-
         var instr = input[0];
         
         var result1 = instr.Sum(c => c == '(' ? 1 : -1);
