@@ -28,6 +28,7 @@ public class AocClient {
         if (File.Exists(filePath)) 
             return await File.ReadAllLinesAsync(filePath);
         Client.Value.DefaultRequestHeaders.Add("Cookie",$"session={_session}");
+        Client.Value.DefaultRequestHeaders.Add("User-Agent",$".NET/6.0 (github.com/edevyatkin/AdventOfCode reddit:u/edevyatkin)");
         var uri = $"https://adventofcode.com/{year}/day/{day}/input";
         var responseMessage = await Client.Value.GetAsync(uri);
         var data = await responseMessage.Content.ReadAsStringAsync();
