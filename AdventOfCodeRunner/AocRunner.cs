@@ -17,12 +17,14 @@ public class AocRunner
     {
         await Parser.Default.ParseArguments<AocOptions>(args).WithParsedAsync(async o =>
         {
-            var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var files = Directory.GetFiles(location!).Where(name => name.EndsWith(".dll")).ToList();
-            var allTypes = files
-                    .Select(Assembly.LoadFrom)
-                    .SelectMany(t => t.GetExportedTypes())
-                    .ToList();
+            Console.WriteLine($"Running day {o.Day}, {o.Year}...");
+            var assemblyName = $"AdventOfCode{o.Year}";
+            if (!File.Exists(assemblyName+".dll"))
+            {
+                Console.WriteLine($"Couldn't found AdventOfCode{o.Year} project");
+                return;
+            }
+            var allTypes = Assembly.Load(assemblyName).GetExportedTypes();
             foreach(var type in allTypes)
             {
                 var attr = type.GetCustomAttribute<AocDayAttribute>();
