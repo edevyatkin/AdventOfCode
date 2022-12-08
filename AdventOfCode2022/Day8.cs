@@ -75,8 +75,8 @@ public class Day8 : IAocDay
                 if (IsVisible(i, j))
                 {
                     hs.Add((i, j));
+                    result2 = Math.Max(result2, CalculateScenicScore(i, j));
                 }
-                result2 = Math.Max(result2, CalculateScenicScore(i, j));
             }
         }
 
