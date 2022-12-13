@@ -41,44 +41,44 @@ public class Day13 : IAocDay
         return new AocDayResult(result1, result2);
     }
 
-    private Node Parse(string str)
+    private Node Parse(string s)
     {
-        Node ParseFromIndex(string s, ref int i)
+        var stack = new Stack<Node>();
+        var top = new Node();
+        stack.Push(top);
+        for (int i = 1; i < s.Length-1; i++)
         {
-            var node = new Node();
-            while (i < s.Length)
+            var curNode = stack.Peek();
+            if (s[i] == '[')
             {
-                if (s[i] is '[' or ',')
-                {
-                    i += 1;
-                    node.Children.Add(ParseFromIndex(s, ref i));
-                }
-
-                if (i < s.Length && s[i] == ']')
-                {
-                    i++;
-                    return node;
-                }
-
-                if (i < s.Length && char.IsDigit(s[i]))
-                {
-                    var num = 0;
-                    while (i < s.Length && char.IsDigit(s[i]))
-                    {
-                        num += num * 10 + (s[i] - '0');
-                        i++;
-                    }
-
-                    node.Value = num;
-                    return node;
-                }
+                var node = new Node();
+                curNode.Children.Add(node);
+                stack.Push(node);
+            } 
+            else if (s[i] == ']')
+            {
+                stack.Pop();
+            } 
+            else if (s[i] == ',')
+            {
+                continue;
             }
-
-            return node;
+            else
+            {
+                var num = 0;
+                int ni = i;
+                for (; char.IsDigit(s[ni]); ni++)
+                {
+                    num = num * 10 + (s[ni] - '0');
+                }
+                var node = new Node();
+                node.Value = num;
+                curNode.Children.Add(node);
+                i = ni - 1;
+            }
         }
 
-        int index = 0;
-        return ParseFromIndex(str, ref index);
+        return top;
     }
 
     class Node : IComparable<Node>
@@ -122,17 +122,17 @@ public class Day13 : IAocDay
             {
                 var node = new Node();
                 node.Value = Value;
-                Value = -1;
-                Children.Add(node);
-                return CompareTo(other);
+                var parentNode = new Node();
+                parentNode.Children.Add(node);
+                return parentNode.CompareTo(other);
             }
             if (Children.Count > 0 && other.Value != -1)
             {
                 var node = new Node();
                 node.Value = other.Value;
-                other.Value = -1;
-                other.Children.Add(node);
-                return CompareTo(other);       
+                var parentNode = new Node();
+                parentNode.Children.Add(node);
+                return CompareTo(parentNode);       
             }
 
             if (Value == -1 && Children.Count == 0)
@@ -149,7 +149,7 @@ public class Day13 : IAocDay
             {
                 return "[" + string.Join(',', Children) + "]";
             }
-            return Value != -1 ? Value.ToString(): string.Empty;
+            return Value != -1 ? Value.ToString(): "[]";
         }
     }
 }
