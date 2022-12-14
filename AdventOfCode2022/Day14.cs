@@ -19,34 +19,23 @@ public class Day14 : IAocDay
             {
                 var p1 = sp[j].Split(',').Select(int.Parse).ToArray();
                 var p2 = sp[j+1].Split(',').Select(int.Parse).ToArray();
-                int from = 0, to = 0;
-                if (p1[0] == p2[0])
+
+                if (p1[0] > p2[0])
                 {
-                    from = p1[1];
-                    to = p2[1];
-                    if (from > to)
-                    {
-                        (from, to) = (to, from);
-                    }
-                    for (int l = from; l <= to; l++)
-                    {
-                        rocks.Add((p1[0], l));
-                    }
-                    bottom = Math.Max(bottom, to);
+                    (p1[0], p2[0]) = (p2[0], p1[0]);
                 }
-                else
+                if (p1[1] > p2[1])
                 {
-                    from = p1[0];
-                    to = p2[0];
-                    if (from > to)
+                    (p1[1], p2[1]) = (p2[1], p1[1]);
+                }
+                
+                for (var k = p1[0]; k <= p2[0]; k++)
+                {
+                    for (var l = p1[1]; l <= p2[1]; l++)
                     {
-                        (from, to) = (to, from);
+                        rocks.Add((k, l));
+                        bottom = Math.Max(bottom, l);
                     }
-                    for (int k = from; k <= to; k++)
-                    {
-                        rocks.Add((k, p1[1]));
-                    }
-                    bottom = Math.Max(bottom, p1[1]);
                 }
             }
         }
