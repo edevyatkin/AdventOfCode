@@ -43,7 +43,8 @@ public class Day19 : IAocDay
             var (or, cl, obs, ge, orr, clr, obsr, ger, t) = d;
             if (counter % 1000000 == 0)
             {
-                Console.WriteLine($"{d}, counter={counter} cacheHits={hits} ({hits / (double)counter:0.00000}%, maxGeHits={maxGeHits} ({maxGeHits / (double)counter:0.00000}%)");
+                Console.WriteLine($"{d}, counter={counter} cacheHits={hits} ({hits / (double)counter * 100:0.00000}%, " 
+                                  + $"maxGeHits={maxGeHits} ({maxGeHits / (double)counter * 100:0.00000}%)");
             }
 
             result = Math.Max(result, ge);
@@ -107,7 +108,7 @@ public class Day19 : IAocDay
     private long GetPriority((int or, int cl, int obs, int ge, int orr, int clr, int obsr, int ger, int t) next,
         Blueprint blp)
     {
-        return 100 - next.t * (2 * blp.OreRobotOre * next.or * next.orr
+        return -1 * (2 * blp.OreRobotOre * next.or * next.orr
                                + 5 * blp.ClayRobotOre * next.cl * next.clr * 10
                                + 11 * blp.ObsidianRobotOre * blp.ObsidianRobotClay * next.obs * next.obsr * 100
                                + 23 * blp.GeodeRobotOre * blp.GeodeRobotObsidian * next.ge * next.ger * 1000);
