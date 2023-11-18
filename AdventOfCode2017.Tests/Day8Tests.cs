@@ -25,6 +25,6 @@ public class Day8Tests
     }, 10)]
     public void Part2Test(string[] input, int result)
     {
-        Assert.Equal(result, new Day8().Solve(input).Part1);
+        Assert.Equal(result, new Day8().Solve(input).Part2);
     }
 }
