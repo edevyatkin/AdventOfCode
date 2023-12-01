@@ -21,20 +21,26 @@ public class Day10 : IAocDay
             HashRound(knots, lengths1, ref pos1, ref skip1);
             return knots[0] * knots[1];
         }
-
-        var lengths2 = input.Select(l => (int)l).ToList();
-        lengths2.AddRange(new int[] { 17, 31, 73, 47, 23 });
-        var count = 64;
-        var pos2 = 0;
-        var skip2 = 0;
-        while (count-- > 0) {
-            HashRound(knots, lengths2, ref pos2, ref skip2);
-        }
-        return string.Concat(knots.Chunk(16)
-            .Select(chnk => Convert.ToString(chnk.Aggregate(0, (acc,e) => acc ^ e), 16).PadLeft(2, '0')));
+        return Hash(input, c);
     }
 
-    internal int[] HashRound(int[] knots, List<int> lengths, ref int pos, ref int skip)
+    internal static string Hash(string input, int c)
+    {
+        var knots = Enumerable.Range(0, c).ToArray();
+        var lengths = input.Select(l => (int)l).ToList();
+        lengths.AddRange(new int[] { 17, 31, 73, 47, 23 });
+        var count = 64;
+        var pos = 0;
+        var skip = 0;
+        while (count-- > 0) {
+            HashRound(knots, lengths, ref pos, ref skip);
+        }
+        return string.Concat(knots.Chunk(16)
+            .Select(chnk => Convert.ToString(chnk.Aggregate(0, (acc,e) => acc ^ e), 16)
+                .PadLeft(2, '0')));
+    }
+
+    private static void HashRound(int[] knots, List<int> lengths, ref int pos, ref int skip)
     {
         var c = knots.Length;
         foreach (var len in lengths) 
@@ -50,6 +56,5 @@ public class Day10 : IAocDay
             pos %= c;
             skip++;
         }
-        return knots;
     }
 }
