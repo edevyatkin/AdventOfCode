@@ -36,7 +36,7 @@ public class Day8 : IAocDay
             .Select(n => n.Key)
             .ToList();
 
-        return FindLcm(nodesNames.Select(FindNextZIndex).ToList());
+        return MathExtensions.FindLcm(nodesNames.Select(FindNextZIndex).ToList());
 
         int FindNextZIndex(string name)
         {
@@ -53,41 +53,6 @@ public class Day8 : IAocDay
 
             return steps;
         }
-    }
-
-    private static long FindLcm(List<int> nums)
-    {
-        var factors = new Dictionary<int, int>();
-        foreach (var num in nums)
-        {
-            var primeFactors = FindPrimeFactors(num);
-            var numFactors = new Dictionary<int, int>();
-            foreach (var f in primeFactors)
-                numFactors[f] = numFactors.GetValueOrDefault(f, 0) + 1;
-            foreach (var (f, count) in numFactors)
-                factors[f] = Math.Max(count, factors.GetValueOrDefault(f, 0));
-        }
-
-        return factors.Select(kv => (long)Math.Pow(kv.Key, kv.Value))
-            .Aggregate(1L, (a,f) => a * f);
- 
-    }
-
-    private static List<int> FindPrimeFactors(int num)
-    {
-        var factors = new List<int>();
-        var div = 2;
-        while (num > 1)
-        {
-            while (num % div == 0)
-            {
-                factors.Add(div);
-                num /= div;
-            }
-            div++;
-        }
-
-        return factors;
     }
 
     private static (string inst, Dictionary<string, (string, string)> nodes) ParseInput(string[] input)
