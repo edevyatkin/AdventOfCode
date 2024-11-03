@@ -17,7 +17,7 @@ public class AocClient {
     }
         
     public async Task<string[]> FetchInputAsync(int year, int day) {
-        if (year is < 2015 or > 2023)
+        if (year is < 2015 or > 2024)
             throw new ArgumentException($"Wrong year: {year}", nameof(year));
         if (day is < 1 or > 25)
             throw new ArgumentException($"Wrong day: {day}", nameof(day));
@@ -28,7 +28,7 @@ public class AocClient {
         if (File.Exists(filePath)) 
             return await File.ReadAllLinesAsync(filePath);
         Client.Value.DefaultRequestHeaders.Add("Cookie",$"session={_session}");
-        Client.Value.DefaultRequestHeaders.Add("User-Agent",$".NET/6.0 (github.com/edevyatkin/AdventOfCode reddit:u/edevyatkin)");
+        Client.Value.DefaultRequestHeaders.Add("User-Agent",$".NET/8.0 (github.com/edevyatkin/AdventOfCode reddit:u/edevyatkin)");
         var uri = $"https://adventofcode.com/{year}/day/{day}/input";
         var responseMessage = await Client.Value.GetAsync(uri);
         var data = await responseMessage.Content.ReadAsStringAsync();
