@@ -31,12 +31,15 @@ public class Day18 : IAocDay
             .Select(line => line.Split(',').Select(int.Parse).ToArray())
             .Select(a => (a[0], a[1]))
             .ToArray();
-        var fallenBytes = new HashSet<(int X, int Y)>(bytes[..(bytesCount-1)]);
         var dirs = new (int Di, int Dj)[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
-        for (var index = bytesCount-1; index < bytes.Length; index++)
+        int i = bytesCount-1, j = bytes.Length-1;
+        while (i <= j)
         {
-            var b = bytes[index];
-            fallenBytes.Add((b.X, b.Y));
+            var mid = i + (j - i) / 2;
+            if (!isPartTwo)
+                mid = i;
+            var b = bytes[mid];
+            var fallenBytes = new HashSet<(int X, int Y)>(bytes[..(mid+1)]);
             var dists = CreateGrid(gridWidth, gridHeight);
             var pq = new PriorityQueue<(int X, int Y, int Len), int>();
             pq.Enqueue((0, 0, 0), 0);
@@ -60,11 +63,20 @@ public class Day18 : IAocDay
                 }
                 dists[x][y] = -dists[x][y]; // mark visited
             }
-
-            if (index == bytesCount-1 && !isPartTwo)
+            
+            if (!isPartTwo)
                 return -dists[gridWidth-1][gridHeight-1]; // inverse mark
-            if (dists[gridWidth-1][gridHeight-1] == int.MaxValue && isPartTwo)
-                return $"{b.X},{b.Y}";
+
+            if (dists[gridWidth-1][gridHeight-1] == int.MaxValue)
+            {
+                if (i == j)
+                    return $"{b.X},{b.Y}";
+                j = mid;
+            }
+            else
+            {
+                i = mid + 1;
+            }
         }
 
         return default;
