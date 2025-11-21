@@ -17,7 +17,7 @@ public class AocClient {
     }
         
     public async Task<string[]> FetchInputAsync(int year, int day) {
-        if (year is < 2015 or > 2024)
+        if (year is < 2015 or > 2025)
             throw new ArgumentException($"Wrong year: {year}", nameof(year));
         if (day is < 1 or > 25)
             throw new ArgumentException($"Wrong day: {day}", nameof(day));

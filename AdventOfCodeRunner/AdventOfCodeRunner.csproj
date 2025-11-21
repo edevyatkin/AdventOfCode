@@ -15,10 +15,12 @@
       <ProjectReference Include="..\AdventOfCode2015\AdventOfCode2015.csproj" />
       <ProjectReference Include="..\AdventOfCode2016\AdventOfCode2016.csproj" />
       <ProjectReference Include="..\AdventOfCode2017\AdventOfCode2017.csproj" />
+      <ProjectReference Include="..\AdventOfCode2019\AdventOfCode2019.csproj" />
       <ProjectReference Include="..\AdventOfCode2021\AdventOfCode2021.csproj" />
       <ProjectReference Include="..\AdventOfCode2022\AdventOfCode2022.csproj" />
       <ProjectReference Include="..\AdventOfCode2023\AdventOfCode2023.csproj" />
       <ProjectReference Include="..\AdventOfCode2024\AdventOfCode2024.csproj" />
+      <ProjectReference Include="..\AdventOfCode2025\AdventOfCode2025.csproj" />
       <ProjectReference Include="..\AdventOfCodeClient\AdventOfCodeClient.csproj" />
     </ItemGroup>
 

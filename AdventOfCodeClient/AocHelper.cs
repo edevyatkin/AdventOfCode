@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AdventOfCodeClient;
@@ -12,9 +14,21 @@ public static class AocHelper {
         var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         var sessionKeyFullPath = Path.Combine(path!, SessionKeyFile);
         if (!File.Exists(sessionKeyFullPath))
-            throw new FileNotFoundException("Please create a 'session_key' file with your AoC key into AdventOfCodeClient project folder. " +
-                                            "Your can get the session key from cookies of adventofcode.com site after logging in.");
-        
+        {
+            var key = string.Empty;
+            while (true)
+            {
+                Console.Write("Please insert here a 'session' from cookies of adventofcode.com site after logging in : ");
+                key = Console.ReadLine().Trim();
+                if (!Regex.IsMatch(key, "^[a-z0-9]"))
+                {
+                    Console.WriteLine("Invalid session key");
+                    continue;
+                }
+                break;
+            }
+            await File.WriteAllTextAsync(sessionKeyFullPath, key);
+        }
         var sessionKey = await File.ReadAllTextAsync(sessionKeyFullPath);
         var aocClient = new AocClient(sessionKey.Trim());
         return await aocClient.FetchInputAsync(year, day);
