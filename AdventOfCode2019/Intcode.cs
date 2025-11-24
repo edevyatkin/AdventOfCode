@@ -2,9 +2,10 @@
 
 public static class Intcode
 {
-    public static List<int> Execute(int[] instructions, int systemId = default)
+    public static List<int> Execute(int[] instructions, params int[] systemIds)
     {
         var i = 0;
+        var systemIdIndex = 0;
         var output = new List<int>();
         while (true)
         {
@@ -25,7 +26,7 @@ public static class Intcode
             }
             else if (opCode == 3)
             {
-                instructions[instructions[i + 1]] = systemId;
+                instructions[instructions[i + 1]] = systemIds[systemIdIndex++];
                 i += 2;
             }
             else if (opCode == 4)
