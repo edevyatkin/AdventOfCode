@@ -7,7 +7,7 @@ public class Day5Tests
     public void Part1Test(string[] instr, int input, int result)
     {
         var nums = instr[0].Split(',').Select(int.Parse).ToArray();
-        Assert.Equal(result, Intcode.Execute(nums, input)[^1]);
+        Assert.Equal(result, new Intcode(nums).Execute(input)[^1]);
     }
     
     [Theory]
@@ -32,6 +32,6 @@ public class Day5Tests
     public void Part2Test(string[] instr, int input, int result)
     {
         var nums = instr[0].Split(',').Select(int.Parse).ToArray();
-        Assert.Equal(result, Intcode.Execute(nums, input)[^1]);
+        Assert.Equal(result, new Intcode(nums).Execute(input)[^1]);
     }
 }

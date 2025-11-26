@@ -25,12 +25,13 @@ public class Day2 : IAocDay
         return new AocDayResult(result1, result2);
     }
 
-    internal int Run(int[] nums, int noun, int verb)
+    internal long Run(int[] nums, int noun, int verb)
     {
         nums = [..nums];
         nums[1] = noun;
         nums[2] = verb;
-        Intcode.Execute(nums);
-        return nums[0];
+        var intCode = new Intcode(nums);
+        intCode.Execute(nums);
+        return intCode.ProgramMemory[0];
     }
 }

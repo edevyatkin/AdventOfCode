@@ -14,7 +14,7 @@ public class Day7 : IAocDay
         {
             var currentInput = 0;
             for (var i = 0; i < 5; i++)
-                currentInput = Intcode.Execute([..program], phaseSetting[i], currentInput)[^1];
+                currentInput = (int)new Intcode(program).Execute(phaseSetting[i], currentInput)[^1];
             result1 = Math.Max(result1, currentInput);
         }
         return new AocDayResult(result1, result2);
