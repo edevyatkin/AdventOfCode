@@ -31,7 +31,7 @@ public class Day2 : IAocDay
         nums[1] = noun;
         nums[2] = verb;
         var intCode = new Intcode(nums);
-        intCode.Execute(nums);
+        intCode.Execute();
         return intCode.ProgramMemory[0];
     }
 }

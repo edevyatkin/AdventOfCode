@@ -4,85 +4,98 @@ public class Intcode
 {
     public readonly Dictionary<long, long> ProgramMemory = new();
     private long _relativeBase = 0;
+    public IntcodeState State { get; private set; } = IntcodeState.NotRunning;
+    private readonly List<long> _output = [];
+    private long _currentInstruction = 0;
 
-    public Intcode(int[] instructions)
+    public Intcode(long[] instructions)
     {
         for (var index = 0; index < instructions.Length; index++)
             ProgramMemory[index] = instructions[index];
     }
     
-    public List<long> Execute(params int[] systemIds)
+    public Intcode(int[] instructions) : this(instructions.Select(n => (long)n).ToArray()) { }
+
+    public Intcode(string[] input) : this(input[0].Split(',').Select(long.Parse).ToArray()) { }
+    
+    public List<long> Execute(params long[] systemIds)
     {
-        var i = 0L;
+        if (State == IntcodeState.Completed)
+            return _output;
         var systemIdIndex = 0;
-        var output = new List<long>();
         while (true)
         {
-            var (modes, opCode) = ParseInstruction(ProgramMemory[i]);
+            var (modes, opCode) = ParseInstruction(ProgramMemory[_currentInstruction]);
             if (opCode == 1)
             {
-                var ix = GetDataIndex(i, 3, modes);
+                var ix = GetDataIndex(_currentInstruction, 3, modes);
                 ProgramMemory[ix[2]] = ProgramMemory.GetValueOrDefault(ix[0]) + ProgramMemory.GetValueOrDefault(ix[1]);
-                i += 4;
+                _currentInstruction += 4;
             } 
             else if (opCode == 2)
             {
-                var ix = GetDataIndex(i, 3, modes);
+                var ix = GetDataIndex(_currentInstruction, 3, modes);
                 ProgramMemory[ix[2]] = ProgramMemory.GetValueOrDefault(ix[0]) * ProgramMemory.GetValueOrDefault(ix[1]);
-                i += 4;
+                _currentInstruction += 4;
             }
             else if (opCode == 3)
             {
-                var ix = GetDataIndex(i, 1, modes);
+                if (State == IntcodeState.NotRunning)
+                    State = IntcodeState.Running;
+                else if (State == IntcodeState.Running && systemIdIndex == systemIds.Length)
+                    break;
+                var ix = GetDataIndex(_currentInstruction, 1, modes);
                 ProgramMemory[ix[0]] = systemIds[systemIdIndex++];
-                i += 2;
+                _currentInstruction += 2;
             }
             else if (opCode == 4)
             {
-                var ix = GetDataIndex(i, 1, modes);
-                output.Add(ProgramMemory.GetValueOrDefault(ix[0]));
-                i += 2;
+                var ix = GetDataIndex(_currentInstruction, 1, modes);
+                _output.Add(ProgramMemory.GetValueOrDefault(ix[0]));
+                _currentInstruction += 2;
             }
             else if (opCode == 5)
             {
-                var ix = GetDataIndex(i, 2, modes);
+                var ix = GetDataIndex(_currentInstruction, 2, modes);
                 if (ProgramMemory.GetValueOrDefault(ix[0]) != 0)
-                    i = ProgramMemory.GetValueOrDefault(ix[1]);
+                    _currentInstruction = ProgramMemory.GetValueOrDefault(ix[1]);
                 else
-                    i += 3;
+                    _currentInstruction += 3;
             }
             else if (opCode == 6)
             {
-                var ix = GetDataIndex(i, 2, modes);
+                var ix = GetDataIndex(_currentInstruction, 2, modes);
                 if (ProgramMemory.GetValueOrDefault(ix[0]) == 0)
-                    i = ProgramMemory.GetValueOrDefault(ix[1]);
+                    _currentInstruction = ProgramMemory.GetValueOrDefault(ix[1]);
                 else
-                    i += 3;
+                    _currentInstruction += 3;
             }
             else if (opCode == 7)
             {
-                var ix = GetDataIndex(i, 3, modes);
+                var ix = GetDataIndex(_currentInstruction, 3, modes);
                 ProgramMemory[ix[2]] = ProgramMemory.GetValueOrDefault(ix[0]) < ProgramMemory.GetValueOrDefault(ix[1]) ? 1 : 0;
-                i += 4;
+                _currentInstruction += 4;
             }
             else if (opCode == 8)
             {
-                var ix = GetDataIndex(i, 3, modes);
+                var ix = GetDataIndex(_currentInstruction, 3, modes);
                 ProgramMemory[ix[2]] = ProgramMemory.GetValueOrDefault(ix[0]) == ProgramMemory.GetValueOrDefault(ix[1]) ? 1 : 0;
-                i += 4;
+                _currentInstruction += 4;
             }
             else if (opCode == 9)
             {
-                var ix = GetDataIndex(i, 1, modes);
+                var ix = GetDataIndex(_currentInstruction, 1, modes);
                 _relativeBase += ProgramMemory.GetValueOrDefault(ix[0]);
-                i += 2;
+                _currentInstruction += 2;
             }
             else if (opCode == 99)
             {
+                State = IntcodeState.Completed;
+                _currentInstruction = 0;
                 break;
             }
         }
-        return output;
+        return _output;
     }
     
     private List<long> GetDataIndex(long index, int operandsCount, int[] modes)
@@ -108,4 +121,11 @@ public class Intcode
         Math.DivRem(instruction, 10, out var tm);
         return ([(int)fm, (int)sm, (int)tm], (int)oc);
     }
+}
+
+public enum IntcodeState
+{
+    NotRunning, 
+    Running,
+    Completed
 }
