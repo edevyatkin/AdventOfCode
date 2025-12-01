@@ -31,8 +31,8 @@ public class Day17 : IAocDay
             var fg = figureIterator.Current.Fg;
 
             long posFI = 2L;
-            long posFJ = fg.Split().Length + towerHeight + 2;
-            var sp = fg.Split();
+            long posFJ = fg.Split(Environment.NewLine).Length + towerHeight + 2;
+            var sp = fg.Split(Environment.NewLine);
             var figurePositions = new HashSet<(long I, long J)>();
             for (var ci = 0; ci < sp.Length; ci++)
             {
