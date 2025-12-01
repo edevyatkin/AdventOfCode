@@ -57,11 +57,11 @@ public class Day14 : IAocDay
     static long Produce1Fuel(Dictionary<string, (int Cnt, List<(int Cnt, string Chem)> Chems)> reactions, Dictionary<string, long> warehouse)
     {
         var ores = 0L;
-        Dfs((1, "FUEL"));
+        Dfs(1, "FUEL");
         return ores;
-        void Dfs((long, string) need)
+        
+        void Dfs(long needCnt, string needChem)
         {
-            var (needCnt, needChem) = need;
             if (needChem == "ORE")
             {
                 ores += needCnt;
@@ -69,15 +69,15 @@ public class Day14 : IAocDay
             }
 
             var (outputCnt, inputChems) = reactions[needChem];
-            var reactionsCount =
-                (int)Math.Ceiling((double)Math.Max(0, needCnt - warehouse.GetValueOrDefault(needChem)) / outputCnt);
-                
-            foreach (var (inputCnt, inputChem) in inputChems)
-                Dfs((inputCnt * reactionsCount, inputChem));
-
-            warehouse[needChem] = warehouse.GetValueOrDefault(needChem) + outputCnt * reactionsCount;
-            if (warehouse.TryGetValue(needChem, out var warehouseCnt))
-                warehouse[needChem] = warehouse.GetValueOrDefault(needChem) - Math.Min(warehouseCnt, needCnt);
+            if (warehouse.GetValueOrDefault(needChem) < needCnt)
+            {
+                var reactionsCount = 
+                    (int)Math.Ceiling((double)(needCnt - warehouse.GetValueOrDefault(needChem)) / outputCnt);
+                foreach (var (inputCnt, inputChem) in inputChems)
+                    Dfs(inputCnt * reactionsCount, inputChem);
+                warehouse[needChem] = warehouse.GetValueOrDefault(needChem) + outputCnt * reactionsCount;
+            }
+            warehouse[needChem] -= needCnt;
         }
     }
 }
