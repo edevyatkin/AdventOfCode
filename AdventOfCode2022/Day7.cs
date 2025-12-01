@@ -1,3 +1,4 @@
+using System.Text;
 using AdventOfCodeClient;
 
 namespace AdventOfCode2022;
@@ -26,7 +27,7 @@ public class Day7 : IAocDay
             var s = input[index];
             if (s.StartsWith("$ cd"))
             {
-                var cd = s.Split(' ')[^1];
+                var cd = s.Split(' ')[^1].TrimEnd();
                 if (cd == "/")
                 {
                     while (st.Peek().Name != "/")
@@ -57,11 +58,11 @@ public class Day7 : IAocDay
                     var sp = ln.Split(' ');
                     if (sp[0].StartsWith("dir"))
                     {
-                        curDir.AddSubDirIfNotExist(sp[1]);
+                        curDir.AddSubDirIfNotExist(sp[1].TrimEnd());
                     }
                     else
                     {
-                        curDir.AddFileIfNotExist(sp[1], int.Parse(sp[0]));
+                        curDir.AddFileIfNotExist(sp[1].TrimEnd(), int.Parse(sp[0]));
                     }
 
                     index++;
@@ -113,6 +114,22 @@ public class Day7 : IAocDay
         }
 
         return dirSizes;
+    }
+
+    public void PrintTree(Dir dir)
+    {
+        var sb = new StringBuilder();
+        Dfs(dir, 1);
+        Console.WriteLine(sb.ToString());
+
+        void Dfs(Dir dir, int level)
+        {
+            sb.AppendLine($"{new string(' ', level)} - {dir.Name} (dir)");
+            foreach (var fil in dir.Files)
+                sb.AppendLine($"{new string(' ', level+1)} - {fil.Name} (file, size={fil.Size})");
+            foreach (var subDir in dir.SubDirs.Values)
+                Dfs(subDir, level + 1);
+        }
     }
 }
 
