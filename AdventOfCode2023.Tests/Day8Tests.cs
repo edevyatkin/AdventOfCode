@@ -19,7 +19,7 @@ BBB = (AAA, ZZZ)
 ZZZ = (ZZZ, ZZZ)", 6)]
     public void Part1Test(string input, int result)
     {
-        Assert.Equal(result, Day8.SolvePart1(input.Split('\n')));
+        Assert.Equal(result, Day8.SolvePart1(input.Split(Environment.NewLine)));
     }
 
     [Theory]
@@ -35,6 +35,6 @@ ZZZ = (ZZZ, ZZZ)", 6)]
 XXX = (XXX, XXX)", 6)]
     public void Part2Test(string input, long result)
     {
-        Assert.Equal(result, Day8.SolvePart2(input.Split('\n')));
+        Assert.Equal(result, Day8.SolvePart2(input.Split(Environment.NewLine)));
     }
 }
