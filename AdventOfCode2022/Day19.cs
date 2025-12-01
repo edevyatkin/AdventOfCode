@@ -13,7 +13,6 @@ public class Day19 : IAocDay
         for (var i = 0; i < input.Length; i++)
         {
             var blueprint = ParseBlueprint(input[i]);
-            Console.WriteLine(blueprint);
             var maxGeodes1 = MaxGeodes(blueprint, 24);
             var qualityLevel = (i + 1) * maxGeodes1;
             result1 += qualityLevel;
@@ -41,11 +40,6 @@ public class Day19 : IAocDay
             counter++;
             var d = q.Dequeue();
             var (or, cl, obs, ge, orr, clr, obsr, ger, t) = d;
-            if (counter % 1000000 == 0)
-            {
-                Console.WriteLine($"{d}, counter={counter} cacheHits={hits} ({hits / (double)counter * 100:0.00000}%, " 
-                                  + $"maxGeHits={maxGeHits} ({maxGeHits / (double)counter * 100:0.00000}%)");
-            }
 
             result = Math.Max(result, ge);
 
