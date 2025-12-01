@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace AdventOfCode2022.Tests;
@@ -22,7 +23,7 @@ Valve BB has flow rate=1; tunnels lead to valves CC, AA
 Valve CC has flow rate=5; tunnels lead to valves BB", 160)]
     public void Part1Test(string data, int result)
     { 
-        Assert.Equal(result, new Day16().Solve(data.Split('\n')).Part1);
+        Assert.Equal(result, new Day16().Solve(data.Split(Environment.NewLine)).Part1);
     } 
     
     [Theory]
@@ -43,6 +44,6 @@ Valve BB has flow rate=1; tunnels lead to valves CC, AA
 Valve CC has flow rate=5; tunnels lead to valves BB", 139)]
     public void Part2Test(string data, int result)
     { 
-        Assert.Equal(result, new Day16().Solve(data.Split('\n')).Part2);
+        Assert.Equal(result, new Day16().Solve(data.Split(Environment.NewLine)).Part2);
     } 
 }

@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace AdventOfCode2022.Tests;
@@ -15,7 +16,7 @@ L 5
 R 2", 2, 13)]
     public void Part1Test(string data, int knots, int result)
     {
-        Assert.Equal(result, new Day9().TailVisited(data.Split('\n'), knots));
+        Assert.Equal(result, new Day9().TailVisited(data.Split(Environment.NewLine), knots));
     }
     
     
@@ -30,6 +31,6 @@ L 25
 U 20", 10, 36)]
     public void Part2Test(string data, int knots, int result)
     {
-        Assert.Equal(result, new Day9().TailVisited(data.Split('\n'), knots));
+        Assert.Equal(result, new Day9().TailVisited(data.Split(Environment.NewLine), knots));
     }
 }

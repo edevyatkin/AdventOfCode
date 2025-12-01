@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace AdventOfCode2022.Tests;
@@ -12,6 +13,6 @@ public class Day8Tests
 35390", 21)]
     public void Part1Test(string data, int result)
     {
-        Assert.Equal(result, new Day8().Solve(data.Split('\n')).Part1);
+        Assert.Equal(result, new Day8().Solve(data.Split(Environment.NewLine)).Part1);
     }
 }

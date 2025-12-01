@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace AdventOfCode2022.Tests;
@@ -22,7 +23,7 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3", 10, 26)]
     public void Part1Test(string data, int row, int result)
     {
         var day = new Day15();
-        var input = day.ParseInput(data.Split('\n'));
+        var input = day.ParseInput(data.Split(Environment.NewLine));
         Assert.Equal(result, day.GetPart1Result(input, row));
     } 
     
@@ -44,7 +45,7 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3", 20, 56000011)]
     public void Part2Test(string data, int max, int result)
     {
         var day = new Day15();
-        var input = day.ParseInput(data.Split('\n'));
+        var input = day.ParseInput(data.Split(Environment.NewLine));
         Assert.Equal(result, day.GetPart2Result(input, max));
     } 
 }

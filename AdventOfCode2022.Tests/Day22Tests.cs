@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace AdventOfCode2022.Tests;
@@ -21,7 +22,7 @@ public class Day22Tests
 10R5L5R10L4R5L5", 6032)]
     public void Part1Test(string data, int result)
     {
-        Assert.Equal(result, new Day22().CalculatePassword(data.Split('\n'), false));
+        Assert.Equal(result, new Day22().CalculatePassword(data.Split(Environment.NewLine), false));
     }
 
     [Theory]
@@ -41,7 +42,7 @@ public class Day22Tests
 10R5L5R10L4R5L5", 5031)]
     public void Part2Test(string data, int result)
     {
-        Assert.Equal(result, new Day22().CalculatePassword(data.Split('\n'), true));
+        Assert.Equal(result, new Day22().CalculatePassword(data.Split(Environment.NewLine), true));
     }
 
     [Theory]
@@ -61,7 +62,7 @@ public class Day22Tests
         ...#....
         .....#..
         .#......
-        ......#.".Split('\n');
+        ......#.".Split(Environment.NewLine);
         Assert.True(new Day22().SearchForInnerCorners(data).Contains((i, j, di, dj)));
     }
 
@@ -95,7 +96,7 @@ public class Day22Tests
         ...#....
         .....#..
         .#......
-        ......#.".Split('\n');
+        ......#.".Split(Environment.NewLine);
         Assert.True(new Day22().FindSides(data, (i, j), (di, dj)) == (ee, ii));
     }
 
@@ -131,7 +132,7 @@ public class Day22Tests
         ...#....
         .....#..
         .#......
-        ......#.".Split('\n');
+        ......#.".Split(Environment.NewLine);
         Assert.True(new Day22().IsNeedRotate(data, (i, j), (di, dj)) == isNeed);
     }
 }

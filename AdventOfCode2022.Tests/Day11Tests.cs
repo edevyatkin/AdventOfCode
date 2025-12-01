@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using Xunit;
 
@@ -36,7 +37,7 @@ Monkey 3:
 ", 10605)]
     public void Part1Test(string data, long result)
     {
-        Assert.Equal(result, new Day11().Solve(data.Split('\n')).Part1);
+        Assert.Equal(result, new Day11().Solve(data.Split(Environment.NewLine)).Part1);
     }
     [Theory]
     [InlineData(@"Monkey 0:
@@ -69,6 +70,6 @@ Monkey 3:
 ", 2713310158)]
     public void Part2Test(string data, long result)
     {
-        Assert.Equal(result, new Day11().Solve(data.Split('\n')).Part2);
+        Assert.Equal(result, new Day11().Solve(data.Split(Environment.NewLine)).Part2);
     }
 }

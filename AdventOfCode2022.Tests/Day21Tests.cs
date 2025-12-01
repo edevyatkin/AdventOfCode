@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using Xunit;
 
@@ -23,7 +24,7 @@ drzm: hmdt - zczc
 hmdt: 32", 152)]
     public void Part1Test(string data, double result)
     { 
-        Assert.Equal(result, new Day21().Solve(data.Split('\n')).Part1);
+        Assert.Equal(result, new Day21().Solve(data.Split(Environment.NewLine)).Part1);
     }
     
     [Theory]
@@ -44,6 +45,6 @@ drzm: hmdt - zczc
 hmdt: 32", 301)]
     public void Part2Test(string data, double result)
     { 
-        Assert.Equal(result, new Day21().Solve(data.Split('\n')).Part2);
+        Assert.Equal(result, new Day21().Solve(data.Split(Environment.NewLine)).Part2);
     }
 }
