@@ -13,7 +13,7 @@ public class Day7 : IAocDay
         var row = new long[input.Length];
         row[input[0].IndexOf('S')] = 1;
         
-        for (var i = 2; i < input.Length; i++)
+        for (var i = 2; i < input.Length; i += 2)
         {
             for (var j = 0; j < input[i].Length; j++)
             {
