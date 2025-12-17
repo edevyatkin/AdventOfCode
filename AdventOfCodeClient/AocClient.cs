@@ -19,7 +19,7 @@ public class AocClient {
     public async Task<string[]> FetchInputAsync(int year, int day) {
         if (year is < 2015 or > 2025)
             throw new ArgumentException($"Wrong year: {year}", nameof(year));
-        if (day is < 1 or > 25)
+        if (day < 1 || year < 2025 && day > 25 || year >= 2025 && day > 12)
             throw new ArgumentException($"Wrong day: {day}", nameof(day));
             
         var dirInfo = Directory.CreateDirectory($"aoc_inputs/{year}");
@@ -28,22 +28,20 @@ public class AocClient {
         if (File.Exists(filePath)) 
             return await File.ReadAllLinesAsync(filePath);
         Client.Value.DefaultRequestHeaders.Add("Cookie",$"session={_session}");
-        Client.Value.DefaultRequestHeaders.Add("User-Agent",$".NET/8.0 (github.com/edevyatkin/AdventOfCode reddit:u/edevyatkin)");
+        Client.Value.DefaultRequestHeaders.Add("User-Agent",".NET/10.0 (github.com/edevyatkin/AdventOfCode reddit:u/edevyatkin)");
         var uri = $"https://adventofcode.com/{year}/day/{day}/input";
         var responseMessage = await Client.Value.GetAsync(uri);
         var data = await responseMessage.Content.ReadAsStringAsync();
         if (responseMessage.IsSuccessStatusCode)
         {
             await File.WriteAllTextAsync(filePath, data);
-            var splitted = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            var splitted = data.Split('\n');
             if (splitted[^1] == string.Empty)
                 splitted = splitted[..^1];
             return splitted;
         }
-        else
-        {
-            Console.WriteLine(data);
-            return Array.Empty<string>();    
-        }
+
+        Console.WriteLine(data);
+        return [];
     }
 }

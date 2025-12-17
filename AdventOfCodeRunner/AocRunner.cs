@@ -35,10 +35,13 @@ public class AocRunner
                 var dayClass = Activator.CreateInstance(type);
                 var solveMethod = type.GetMethod(nameof(IAocDay.Solve));
                 var input = await AocHelper.FetchInputAsync(o.Year, o.Day);
-                var result = solveMethod!.Invoke(dayClass, new object[] { input }) as AocDayResult;
+                var result = solveMethod!.Invoke(dayClass, [input]) as AocDayResult;
                 Console.WriteLine($"Part 1:\n{result!.Part1}");
-                Console.WriteLine();
-                Console.WriteLine($"Part 2:\n{result!.Part2}");
+                if (o is { Year: < 2025, Day: < 25 } or { Year: >= 2025, Day: < 12 })
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Part 2:\n{result!.Part2}");
+                }
                 break;
             }            
         });
